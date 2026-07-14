@@ -663,6 +663,37 @@
   }
   .screen.shot { padding: 0; display: block; }
   .screen.shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  /* app tile grid */
+  [hidden] { display: none !important; }
+  .app-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .app-tile {
+    border: 1px solid var(--line); border-radius: 36px; padding: 30px 24px 26px;
+    background: var(--g-pink); cursor: pointer; text-align: center;
+    display: flex; flex-direction: column; align-items: center;
+    font-family: inherit; color: inherit;
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+  .app-tile:hover { transform: translateY(-5px); box-shadow: 0 26px 46px -28px rgba(24, 1, 2, 0.35); }
+  .tile-phone {
+    width: 132px; height: 270px; border-radius: 28px;
+    background: #1C1B20; padding: 6px; margin-bottom: 18px;
+    box-shadow: 0 18px 34px -20px rgba(24, 1, 2, 0.45);
+  }
+  .tile-phone span {
+    display: block; width: 100%; height: 100%;
+    border-radius: 23px; overflow: hidden; background: #fff;
+  }
+  .tile-phone img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+  .app-tile .tname { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 18.5px; letter-spacing: -0.3px; margin-bottom: 8px; }
+  .app-tile .tname .app-icon { width: 28px; height: 28px; border-radius: 9px; font-size: 15px; box-shadow: none; }
+  .app-tile .cat { margin-bottom: 6px; font-size: 11.5px; letter-spacing: 2px; }
+  .app-tile .tag { font-size: 15.5px; color: var(--plum); line-height: 1.35; }
+  .app-tile .tstatus { font-size: 13px; color: var(--soft); margin-top: 10px; }
+  .apps-back { margin-bottom: 24px; }
+  #appDetail .app-card { position: static; }
+  @media (max-width: 900px) { .app-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .app-grid { grid-template-columns: 1fr; } }
   .scr-title { font-size: 17px; font-weight: 600; letter-spacing: -0.4px; }
   .scr-sub { font-size: 11px; color: var(--soft); letter-spacing: 1.5px; text-transform: uppercase; text-align: center; }
   .scr-big { font-size: 30px; font-weight: 600; text-align: center; letter-spacing: -0.5px; }
@@ -1027,8 +1058,63 @@
 
   <div class="wrap">
 
+    <div class="app-grid" id="appGrid">
+      <button class="app-tile" type="button" data-app="memodate">
+        <span class="tile-phone"><span><img src="apps/memodate.png" alt="Memodate screen" loading="lazy"></span></span>
+        <span class="tname"><span class="app-icon" style="background: linear-gradient(-47deg, #5E9E7E 0%, #8FBFA6 100%);">&#x1F9E0;</span>Memodate</span>
+        <span class="cat">Memory || Learning</span>
+        <span class="tag">Never forget a date again</span>
+        <span class="tstatus">In the workshop</span>
+      </button>
+      <button class="app-tile" type="button" data-app="cold-reach">
+        <span class="tile-phone"><span><img src="apps/cold-reach.png" alt="Cold Reach screen" loading="lazy"></span></span>
+        <span class="tname"><span class="app-icon" style="background: linear-gradient(-47deg, #63A4BC 0%, #63A4BC 100%);">&#x1F4E8;</span>Cold Reach</span>
+        <span class="cat">Job search || Automation</span>
+        <span class="tag">Turn networking into a system</span>
+        <span class="tstatus">Live</span>
+      </button>
+      <button class="app-tile" type="button" data-app="onomadrome">
+        <span class="tile-phone"><span><img src="apps/onomadrome.png" alt="OnomaDrome screen" loading="lazy"></span></span>
+        <span class="tname"><span class="app-icon" style="background: linear-gradient(-47deg, #F16B46 0%, #D9A441 100%);">&#x1F464;</span>OnomaDrome</span>
+        <span class="cat">Memory || Social</span>
+        <span class="tag">Never blank on a name again</span>
+        <span class="tstatus">Concept</span>
+      </button>
+      <button class="app-tile" type="button" data-app="wizard-run">
+        <span class="tile-phone"><span><img src="apps/wizard-run.png" alt="Wizard Run gameplay" loading="lazy"></span></span>
+        <span class="tname"><span class="app-icon" style="background: linear-gradient(-47deg, #6D4A9E 0%, #9B7BC9 100%);">&#x1F9D9;</span>Wizard Run</span>
+        <span class="cat">Game || Pixel arcade</span>
+        <span class="tag">Outrun the storm that eats the forest</span>
+        <span class="tstatus">Playable build</span>
+      </button>
+      <button class="app-tile" type="button" data-app="habit-tamagotchi">
+        <span class="tile-phone"><span><img src="apps/habit-tamagotchi.jpg" alt="Habit Tamagotchi screen" loading="lazy"></span></span>
+        <span class="tname"><span class="app-icon" style="background: linear-gradient(-47deg, #3E8E7E 0%, #7BC9A8 100%);">&#x1F423;</span>Habit Tamagotchi</span>
+        <span class="cat">Habits || Companion</span>
+        <span class="tag">A tiny creature that grows when you do</span>
+        <span class="tstatus">In the workshop</span>
+      </button>
+      <button class="app-tile" type="button" data-app="scribble-stickers">
+        <span class="tile-phone"><span><img src="apps/scribble-stickers.png" alt="Scribble Stickers screen" loading="lazy"></span></span>
+        <span class="tname"><span class="app-icon" style="background: linear-gradient(-47deg, #1C1B20 0%, #55525E 100%);">&#x270F;&#xFE0F;</span>Scribble Stickers</span>
+        <span class="cat">Drawing || Chat stickers</span>
+        <span class="tag">Doodle it. Sticker it. Send it.</span>
+        <span class="tstatus">Designing</span>
+      </button>
+      <button class="app-tile" type="button" data-app="backbar">
+        <span class="tile-phone"><span><img src="apps/backbar.png" alt="Backbar screen" loading="lazy"></span></span>
+        <span class="tname"><span class="app-icon" style="background: linear-gradient(-47deg, #3E6E7E 0%, #7BAFBC 100%);">&#x1F9F4;</span>Backbar</span>
+        <span class="cat">Inventory || Small business</span>
+        <span class="tag">Salon stock counts in seconds</span>
+        <span class="tstatus">In discovery</span>
+      </button>
+    </div>
+
+    <div id="appDetail" hidden>
+    <button class="pill-btn apps-back" type="button" id="appsBack">&#8592; All apps</button>
+
     <!-- Memodate -->
-    <div class="app-card" style="background: var(--g-pink);">
+    <div class="app-card" data-app="memodate" hidden style="background: var(--g-pink);">
       <div class="app-left">
         <div class="app-id">
           <div class="app-icon" style="background: linear-gradient(-47deg, #5E9E7E 0%, #8FBFA6 100%);">&#x1F9E0;</div>
@@ -1058,7 +1144,7 @@
     </div>
 
     <!-- Cold Reach -->
-    <div class="app-card" style="background: var(--g-lav);">
+    <div class="app-card" data-app="cold-reach" hidden style="background: var(--g-lav);">
       <div class="app-left">
         <div class="app-id">
           <div class="app-icon" style="background: linear-gradient(-47deg, #63A4BC 0%, #63A4BC 100%);">&#x1F4E8;</div>
@@ -1087,7 +1173,7 @@
     </div>
 
     <!-- OnomaDrome -->
-    <div class="app-card" style="background: var(--g-mint);">
+    <div class="app-card" data-app="onomadrome" hidden style="background: var(--g-mint);">
       <div class="app-left">
         <div class="app-id">
           <div class="app-icon" style="background: linear-gradient(-47deg, #F16B46 0%, #D9A441 100%);">&#x1F464;</div>
@@ -1114,7 +1200,7 @@
     </div>
 
     <!-- Wizard Run -->
-    <div class="app-card" style="background: var(--g-lav);">
+    <div class="app-card" data-app="wizard-run" hidden style="background: var(--g-lav);">
       <div class="app-left">
         <div class="app-id">
           <div class="app-icon" style="background: linear-gradient(-47deg, #6D4A9E 0%, #9B7BC9 100%);">&#x1F9D9;</div>
@@ -1135,7 +1221,7 @@
     </div>
 
     <!-- Habit Tamagotchi -->
-    <div class="app-card" style="background: var(--g-mint);">
+    <div class="app-card" data-app="habit-tamagotchi" hidden style="background: var(--g-mint);">
       <div class="app-left">
         <div class="app-id">
           <div class="app-icon" style="background: linear-gradient(-47deg, #3E8E7E 0%, #7BC9A8 100%);">&#x1F423;</div>
@@ -1156,7 +1242,7 @@
     </div>
 
     <!-- Scribble Stickers -->
-    <div class="app-card" style="background: var(--g-peach);">
+    <div class="app-card" data-app="scribble-stickers" hidden style="background: var(--g-peach);">
       <div class="app-left">
         <div class="app-id">
           <div class="app-icon" style="background: linear-gradient(-47deg, #1C1B20 0%, #55525E 100%);">&#x270F;&#xFE0F;</div>
@@ -1177,7 +1263,7 @@
     </div>
 
     <!-- Backbar -->
-    <div class="app-card" style="background: var(--g-blue);">
+    <div class="app-card" data-app="backbar" hidden style="background: var(--g-blue);">
       <div class="app-left">
         <div class="app-id">
           <div class="app-icon" style="background: linear-gradient(-47deg, #3E6E7E 0%, #7BAFBC 100%);">&#x1F9F4;</div>
@@ -1197,6 +1283,7 @@
       </div>
     </div>
 
+    </div><!-- /appDetail -->
 
   </div>
 </section>
@@ -1278,6 +1365,27 @@
       tabs.forEach(function (t) { t.setAttribute('aria-selected', t.dataset.go === name ? 'true' : 'false'); });
       window.scrollTo(0, 0);
       if (history.replaceState) history.replaceState(null, '', '#' + name);
+    }
+
+    var appGrid = document.getElementById('appGrid');
+    var appDetail = document.getElementById('appDetail');
+    if (appGrid && appDetail) {
+      appGrid.addEventListener('click', function (e) {
+        var tile = e.target.closest ? e.target.closest('.app-tile') : null;
+        if (!tile) return;
+        var id = tile.getAttribute('data-app');
+        appGrid.hidden = true;
+        appDetail.hidden = false;
+        Array.prototype.forEach.call(appDetail.querySelectorAll('.app-card'), function (c) {
+          c.hidden = c.getAttribute('data-app') !== id;
+        });
+        window.scrollTo(0, 0);
+      });
+      document.getElementById('appsBack').addEventListener('click', function () {
+        appDetail.hidden = true;
+        appGrid.hidden = false;
+        window.scrollTo(0, 0);
+      });
     }
 
     var veil = document.getElementById('portalVeil');
