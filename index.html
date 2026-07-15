@@ -742,7 +742,6 @@
     position: absolute; z-index: 60; border-radius: 10px; border: 3px solid #fff;
     box-shadow: 0 10px 20px -10px rgba(24, 1, 2, 0.5); object-fit: cover;
   }
-  .confetti-veil { position: fixed; inset: 0; z-index: 998; pointer-events: none; }
   @keyframes fbFloat { from { transform: translate(0, 0); } to { transform: translate(22px, -30px); } }
   @keyframes fbSway { from { transform: rotate(-4deg); } to { transform: rotate(4deg); } }
   @keyframes fbPop { 40% { transform: scale(1.3); opacity: .9; } 100% { transform: scale(1.7); opacity: 0; } }
@@ -1709,13 +1708,13 @@
 
     /* post-it follows the scroll until it meets the headline */
     var barNote = document.querySelector('.bar-sticky');
-    var stmtEl = document.querySelector('.statement');
-    if (barNote && stmtEl) {
+    var vidsEl = document.querySelector('.vids');
+    if (barNote && vidsEl) {
       var noteTicking = false;
       var noteFollow = function () {
         noteTicking = false;
         if (!panels.home.classList.contains('active')) { barNote.style.transform = ''; return; }
-        var tyMax = stmtEl.offsetTop - (barNote.offsetTop + barNote.offsetHeight);
+        var tyMax = vidsEl.offsetTop - (barNote.offsetTop + barNote.offsetHeight);
         var ty = Math.min(window.scrollY, Math.max(0, tyMax));
         barNote.style.transform = 'rotate(-4deg) translateY(' + ty + 'px)';
       };
@@ -1725,13 +1724,12 @@
       noteFollow();
     }
 
-    /* balloons easter egg: pop all 3 for confetti */
+    /* balloons easter egg */
     (function () {
       var fbs = document.querySelectorAll('.fb');
       if (!fbs.length) return;
       var polaroidImg = document.querySelector('.polaroid img');
       var srcs = ['favicon.png', 'pixel-face.png', polaroidImg ? polaroidImg.src : ''];
-      var poppedCount = 0;
 
       function dropPic(img) {
         var r = img.getBoundingClientRect();
@@ -1765,34 +1763,6 @@
         requestAnimationFrame(step);
       }
 
-      function confettiBurst() {
-        var c = document.createElement('canvas');
-        c.className = 'confetti-veil';
-        c.width = window.innerWidth; c.height = window.innerHeight;
-        document.body.appendChild(c);
-        var ctx = c.getContext('2d');
-        var cols = ['#F16B46', '#D9A441', '#63A4BC', '#5E9E7E', '#E8A7BF', '#FBF3A0'];
-        var ps = [];
-        for (var i = 0; i < 200; i++) {
-          ps.push({
-            x: Math.random() * c.width, y: -30 - Math.random() * c.height * 0.7,
-            v: 2 + Math.random() * 3.5, w: 6 + Math.random() * 6, h: 8 + Math.random() * 9,
-            r: Math.random() * Math.PI, vr: (Math.random() - 0.5) * 0.22,
-            col: cols[i % cols.length], sway: Math.random() * 6
-          });
-        }
-        var t0 = performance.now();
-        (function frame(now) {
-          ctx.clearRect(0, 0, c.width, c.height);
-          ps.forEach(function (p) {
-            p.y += p.v; p.x += Math.sin(now / 320 + p.sway) * 1.3; p.r += p.vr;
-            ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r);
-            ctx.fillStyle = p.col; ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
-            ctx.restore();
-          });
-          if (now - t0 < 4500) requestAnimationFrame(frame); else c.remove();
-        })(t0);
-      }
 
       fbs.forEach(function (fb, i) {
         var pic = fb.querySelector('.fb-pic');
@@ -1801,8 +1771,6 @@
           if (fb.classList.contains('popped')) return;
           fb.classList.add('popped');
           dropPic(pic);
-          poppedCount++;
-          if (poppedCount === fbs.length) setTimeout(confettiBurst, 500);
         });
       });
     })();
