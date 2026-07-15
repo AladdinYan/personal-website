@@ -1431,6 +1431,7 @@
       tabs.forEach(function (t) { t.setAttribute('aria-selected', t.dataset.go === name ? 'true' : 'false'); });
       window.scrollTo(0, 0);
       if (history.replaceState) history.replaceState(null, '', '#' + name);
+      if (name === 'home' && window.__measureNote) window.__measureNote();
     }
 
     var appGrid = document.getElementById('appGrid');
@@ -1706,21 +1707,22 @@
       });
     });
 
-    /* post-it follows the scroll until it meets the headline */
+    /* post-it rides down with the scroll, then parks at the top of the LEGO video.
+       An ancestor transform rules out position:fixed, so we compensate with translateY.
+       Updated synchronously on scroll (no rAF) so it tracks the page with zero lag. */
     var barNote = document.querySelector('.bar-sticky');
     var vidsEl = document.querySelector('.vids');
     if (barNote && vidsEl) {
-      var noteTicking = false;
-      var noteFollow = function () {
-        noteTicking = false;
-        if (!panels.home.classList.contains('active')) { barNote.style.transform = ''; return; }
-        var tyMax = vidsEl.offsetTop - (barNote.offsetTop + barNote.offsetHeight);
+      function noteFollow() {
+        if (!panels.home.classList.contains('active')) { barNote.style.transform = 'rotate(-4deg)'; return; }
+        var tyMax = vidsEl.offsetTop - barNote.offsetTop - barNote.offsetHeight;
         var ty = Math.min(window.scrollY, Math.max(0, tyMax));
-        barNote.style.transform = 'rotate(-4deg) translateY(' + ty + 'px)';
-      };
-      window.addEventListener('scroll', function () {
-        if (!noteTicking) { noteTicking = true; requestAnimationFrame(noteFollow); }
-      }, { passive: true });
+        barNote.style.transform = 'translateY(' + ty + 'px) rotate(-4deg)';
+      }
+      window.__measureNote = noteFollow;
+      window.addEventListener('scroll', noteFollow, { passive: true });
+      window.addEventListener('resize', noteFollow);
+      window.addEventListener('load', noteFollow);
       noteFollow();
     }
 
