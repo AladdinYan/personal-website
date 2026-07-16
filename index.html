@@ -335,7 +335,7 @@
   .t-body { font-size: 16px; line-height: 1.4; }
   .t-body b { font-weight: 600; }
   .t-note { font-size: 14.5px; color: var(--soft); }
-  .recs { text-align: center; margin: 48px auto 0; position: relative; z-index: 2; max-width: 860px; padding: 0 16px; }
+  .recs { text-align: center; margin: 48px auto 0; position: relative; z-index: 2; width: 100%; max-width: 860px; padding: 0 16px; }
   .rec-wrap { display: flex; align-items: stretch; gap: 10px; }
   .rec-arrow {
     align-self: center; width: 40px; height: 40px; border-radius: 50%; border: 1.5px solid var(--ink);
@@ -346,6 +346,7 @@
   .rec-track {
     display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory;
     scrollbar-width: none; padding: 4px;
+    flex: 1 1 0; min-width: 0;
   }
   .rec-track::-webkit-scrollbar { display: none; }
   .rec-card {
@@ -878,10 +879,23 @@
   }
   @media (max-width: 640px) {
     .wrap { padding: 0 18px; }
-    .tabs { gap: 14px; }
-    .tab { font-size: 14.5px; }
+    /* two-row mobile header: face + connect on top, tabs full-width below */
+    .bar-inner { flex-wrap: wrap; height: auto; padding: 10px 0 8px; gap: 8px; row-gap: 6px; }
+    .wm-stack { display: none; }
+    .bar-right .icn { display: none; }
+    .tabs { order: 3; width: 100%; justify-content: center; gap: 2px; padding: 4px 5px; }
+    .tab { font-size: 14px; padding: 7px 12px; }
     .pill-btn { padding: 10px 18px; font-size: 14.5px; }
+    .connect-btn { padding: 8px 14px; font-size: 13.5px; }
     .wordmark { font-size: 14px; }
+    /* timeline: logo+date on one row, text below full width */
+    .timeline { padding: 24px 20px; }
+    .t-row { grid-template-columns: 34px 1fr; row-gap: 4px; }
+    .t-row .t-body { grid-column: 1 / -1; }
+    /* testimonials: swipe instead of arrows, comfier card */
+    .rec-arrow { display: none; }
+    .rec-card { padding: 20px 22px; }
+    .rec-quote { font-size: 15.5px; }
     .j-grid { grid-template-columns: 1fr; }
     .hero { padding-top: 60px; }
     .contact-card { padding: 40px 26px; border-radius: 36px; }
@@ -916,7 +930,7 @@
 <section class="panel active" id="home" role="tabpanel">
   <div class="homeA">
     <span class="bar-sticky">User Experience Researcher</span>
-    <h1 class="statement">Rese<span class="glyph gl-arch"></span>rching Pl<span class="glyph gl-sq"></span>y and Human AI <span style="white-space:nowrap">C<span class="glyph gl-donut"></span>nnecti<span class="glyph gl-dot"></span>n</span></h1>
+    <h1 class="statement">Rese<span class="glyph gl-arch"></span>rching <span style="white-space:nowrap">Pl<span class="glyph gl-sq"></span>y</span> and Human AI <span style="white-space:nowrap">C<span class="glyph gl-donut"></span>nnecti<span class="glyph gl-dot"></span>n</span></h1>
     <p class="vid-kicker">My work, in motion</p>
     <div class="vids">
       <div class="vcard vid-wrap">
