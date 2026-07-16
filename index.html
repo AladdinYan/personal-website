@@ -665,6 +665,16 @@
   .screen.shot { padding: 0; display: block; }
   .screen.shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
+  .portal-btn { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; touch-action: manipulation; }
+  .hold-hint {
+    position: fixed; z-index: 999; transform: translate(-50%, -90%);
+    background: var(--ink); color: var(--bg);
+    font-size: 13.5px; font-weight: 500; padding: 8px 14px; border-radius: 999px;
+    pointer-events: none; opacity: 0; white-space: nowrap;
+    transition: opacity .2s ease, transform .2s ease;
+  }
+  .hold-hint.on { opacity: 1; transform: translate(-50%, -125%); }
+
   /* app tile grid */
   [hidden] { display: none !important; }
   .app-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
@@ -880,11 +890,11 @@
   @media (max-width: 640px) {
     .wrap { padding: 0 18px; }
     /* two-row mobile header: face + connect on top, tabs full-width below */
-    .bar-inner { flex-wrap: wrap; height: auto; padding: 10px 0 8px; gap: 8px; row-gap: 6px; }
+    .bar-inner { flex-wrap: wrap; height: auto; padding: 8px 10px 12px; gap: 8px; row-gap: 10px; }
     .wm-stack { display: none; }
     .bar-right { gap: 6px; }
     .bar-right .icn { width: 34px; height: 34px; }
-    .tabs { order: 3; width: 100%; justify-content: center; gap: 2px; padding: 4px 5px; }
+    .tabs { order: -1; width: 100%; justify-content: center; gap: 2px; padding: 4px 5px; }
     .tab { font-size: 14px; padding: 7px 12px; }
     .pill-btn { padding: 10px 18px; font-size: 14.5px; }
     .connect-btn { padding: 8px 14px; font-size: 13.5px; }
@@ -1473,7 +1483,11 @@
     try { pAudio = new Audio('data:audio/mp4;base64,' + PORTAL_AU); } catch (e) {}
     var PCOLS = ['#F16B46', '#D9A441', '#63A4BC', '#E8A0BF', '#F8F0E3'];
 
-    function portalGo(name, cx, cy) {
+    /* portal: desktop click = quick charge then blast; touch = hold to charge (HOLD_MS) then blast.
+       Early release on touch cancels with a "hold to open" hint. */
+    var HOLD_MS = 1800;
+
+    function portalRun(name, cx, cy, hold) {
       var dpr = Math.min(window.devicePixelRatio || 1, 2);
       var W = window.innerWidth, H = window.innerHeight;
       cx = cx || W / 2; cy = cy || H / 2;
@@ -1495,39 +1509,53 @@
           tw: Math.random() * Math.PI * 2
         });
       }
-      var T = 1350, switched = false, start = performance.now();
+      var AUTO_CHARGE = 420, BLAST_T = 880, FADE_IN = 240, CANCEL_T = 220;
+      var phase = 'charge', t0 = performance.now(), blast0 = 0, cancel0 = 0, cancelVa = 1, switched = false;
 
       function ease(x) { return x < 0.5 ? 4*x*x*x : 1 - Math.pow(-2*x + 2, 3) / 2; }
 
       function frame(now) {
-        var t = (now - start) / T;
-        if (t >= 1) {
-          if (!switched) { switched = true; go(name); }
-          veil.classList.remove('on');
-          ctx.clearRect(0, 0, W, H);
-          return;
+        var el = now - t0;
+        var secs = el / 1000;
+        var va, holeR;
+
+        if (phase === 'charge') {
+          va = Math.min(1, el / FADE_IN);
+          var grow = hold ? Math.min(1, el / HOLD_MS) : Math.min(1, el / AUTO_CHARGE);
+          holeR = 26 + 44 * grow + Math.sin(now / 55) * 5;
+          if (!hold && el >= AUTO_CHARGE) { phase = 'blast'; blast0 = now; }
+        } else if (phase === 'blast') {
+          var bt = (now - blast0) / BLAST_T;
+          if (bt >= 1) {
+            if (!switched) { switched = true; if (name) go(name); }
+            veil.classList.remove('on');
+            ctx.clearRect(0, 0, W, H);
+            return;
+          }
+          if (!switched && bt >= 0.06) { switched = true; if (name) go(name); }
+          va = bt > 0.55 ? Math.max(0, 1 - (bt - 0.55) / 0.45) : 1;
+          holeR = 70 + ease(bt) * maxR;
+        } else { /* cancel */
+          var ct = (now - cancel0) / CANCEL_T;
+          if (ct >= 1) {
+            veil.classList.remove('on');
+            ctx.clearRect(0, 0, W, H);
+            return;
+          }
+          va = cancelVa * (1 - ct);
+          holeR = 26 + 44 + Math.sin(now / 55) * 5;
         }
-        // veil alpha: in fast, out after 0.72
-        var va = t < 0.22 ? (t / 0.22) : (t > 0.72 ? Math.max(0, 1 - (t - 0.72) / 0.28) : 1);
-        // hole radius: charge-up swirl until 0.3, then blast open
-        var holeR;
-        if (t < 0.3) { holeR = 26 + 34 * (t / 0.3) + Math.sin(now / 55) * 5; }
-        else { holeR = 60 + ease((t - 0.3) / 0.62) * maxR; }
-        if (!switched && t >= 0.32) { switched = true; if (name) go(name); }
 
         ctx.clearRect(0, 0, W, H);
-        // dark veil
         ctx.globalCompositeOperation = 'source-over';
         ctx.fillStyle = 'rgba(24, 1, 2, ' + (0.94 * va).toFixed(3) + ')';
         ctx.fillRect(0, 0, W, H);
-        // punch the portal hole (soft edge)
         ctx.globalCompositeOperation = 'destination-out';
         var hg = ctx.createRadialGradient(cx, cy, Math.max(0, holeR - 30), cx, cy, holeR + 8);
         hg.addColorStop(0, 'rgba(0,0,0,1)');
         hg.addColorStop(1, 'rgba(0,0,0,0)');
         ctx.fillStyle = hg;
         ctx.beginPath(); ctx.arc(cx, cy, holeR + 8, 0, Math.PI * 2); ctx.fill();
-        // glowing rim + swirling particles
         ctx.globalCompositeOperation = 'lighter';
         ctx.globalAlpha = va;
         ctx.lineWidth = 3;
@@ -1537,7 +1565,7 @@
         ctx.shadowBlur = 0;
         for (var j = 0; j < N; j++) {
           var pt = parts[j];
-          var ang = pt.a + t * pt.spin * 3.4;
+          var ang = pt.a + secs * pt.spin * 2.6;
           var wob = Math.sin(now / 90 + pt.tw) * 7;
           var r = holeR * pt.rr + wob;
           var x = cx + Math.cos(ang) * r;
@@ -1546,7 +1574,6 @@
           ctx.globalAlpha = va * flick;
           ctx.fillStyle = pt.col;
           ctx.beginPath(); ctx.arc(x, y, pt.sz, 0, Math.PI * 2); ctx.fill();
-          // streak tail
           var tx = cx + Math.cos(ang - 0.18) * r;
           var ty = cy + Math.sin(ang - 0.18) * r;
           ctx.strokeStyle = pt.col; ctx.lineWidth = pt.sz * 0.7;
@@ -1556,7 +1583,64 @@
         requestAnimationFrame(frame);
       }
       requestAnimationFrame(frame);
+
+      return {
+        blast: function () {
+          if (phase === 'charge') {
+            phase = 'blast'; blast0 = performance.now();
+            setTimeout(function () { if (!switched) { switched = true; if (name) go(name); veil.classList.remove('on'); } }, BLAST_T + 200);
+          }
+        },
+        cancel: function () {
+          if (phase !== 'blast') { cancelVa = Math.min(1, (performance.now() - t0) / FADE_IN); phase = 'cancel'; cancel0 = performance.now(); }
+        }
+      };
     }
+
+    function portalGo(name, cx, cy) { portalRun(name, cx, cy, false); }
+
+    var holdHint = null;
+    function showHoldHint(x, y) {
+      if (!holdHint) {
+        holdHint = document.createElement('div');
+        holdHint.className = 'hold-hint';
+        holdHint.textContent = '\u2728 Hold to open the portal';
+        document.body.appendChild(holdHint);
+      }
+      holdHint.style.left = x + 'px';
+      holdHint.style.top = y + 'px';
+      holdHint.classList.add('on');
+      clearTimeout(holdHint.__t);
+      holdHint.__t = setTimeout(function () { holdHint.classList.remove('on'); }, 1500);
+    }
+
+    function attachPortalBtn(el) {
+      var holdCtl = null, holdTimer = 0, suppressClick = false;
+      el.addEventListener('pointerdown', function (e) {
+        if (e.pointerType !== 'touch' && e.pointerType !== 'pen') return;
+        suppressClick = true;
+        var r = el.getBoundingClientRect();
+        var ctl = portalRun(el.dataset.go, r.left + r.width / 2, r.top + r.height / 2, true);
+        holdCtl = ctl;
+        holdTimer = setTimeout(function () { if (holdCtl === ctl) { holdCtl = null; ctl.blast(); } }, HOLD_MS);
+      });
+      function endHold(e) {
+        if (e.pointerType !== 'touch' && e.pointerType !== 'pen') return;
+        clearTimeout(holdTimer);
+        if (holdCtl) {
+          holdCtl.cancel(); holdCtl = null;
+          var r = el.getBoundingClientRect();
+          showHoldHint(r.left + r.width / 2, r.top - 8);
+        }
+      }
+      ['pointerup', 'pointerleave', 'pointercancel'].forEach(function (ev) { el.addEventListener(ev, endHold); });
+      el.addEventListener('click', function () {
+        if (suppressClick) { suppressClick = false; return; }
+        var r = el.getBoundingClientRect();
+        portalRun(el.dataset.go, r.left + r.width / 2, r.top + r.height / 2, false);
+      });
+    }
+
     document.querySelectorAll('.v-watch').forEach(function (el) {
       el.addEventListener('click', function (e) {
         var r = el.getBoundingClientRect();
@@ -1565,12 +1649,8 @@
     });
 
     document.querySelectorAll('[data-go]').forEach(function (el) {
-      el.addEventListener('click', function () {
-        if (el.classList.contains('portal-btn')) {
-          var r = el.getBoundingClientRect();
-          portalGo(el.dataset.go, r.left + r.width / 2, r.top + r.height / 2);
-        } else { go(el.dataset.go); }
-      });
+      if (el.classList.contains('portal-btn')) { attachPortalBtn(el); }
+      else { el.addEventListener('click', function () { go(el.dataset.go); }); }
     });
 
     var gh = document.getElementById('ghIcon');
