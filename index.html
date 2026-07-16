@@ -882,7 +882,8 @@
     /* two-row mobile header: face + connect on top, tabs full-width below */
     .bar-inner { flex-wrap: wrap; height: auto; padding: 10px 0 8px; gap: 8px; row-gap: 6px; }
     .wm-stack { display: none; }
-    .bar-right .icn { display: none; }
+    .bar-right { gap: 6px; }
+    .bar-right .icn { width: 34px; height: 34px; }
     .tabs { order: 3; width: 100%; justify-content: center; gap: 2px; padding: 4px 5px; }
     .tab { font-size: 14px; padding: 7px 12px; }
     .pill-btn { padding: 10px 18px; font-size: 14.5px; }
@@ -900,9 +901,6 @@
     .hero { padding-top: 60px; }
     .contact-card { padding: 40px 26px; border-radius: 36px; }
     .form { grid-template-columns: 1fr; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    * { animation: none !important; transition: none !important; }
   }
 </style>
 
@@ -1476,7 +1474,6 @@
     var PCOLS = ['#F16B46', '#D9A441', '#63A4BC', '#E8A0BF', '#F8F0E3'];
 
     function portalGo(name, cx, cy) {
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { go(name); return; }
       var dpr = Math.min(window.devicePixelRatio || 1, 2);
       var W = window.innerWidth, H = window.innerHeight;
       cx = cx || W / 2; cy = cy || H / 2;
