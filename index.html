@@ -1853,7 +1853,10 @@
 </script>
 
 <script>/* Master Nu's counter — self-hosted, no cookies, no IPs */
-(function(){try{fetch('https://im-hits-production.up.railway.app/hit',{method:'POST',mode:'cors',keepalive:true,body:JSON.stringify({p:location.pathname+location.hash,r:document.referrer})})}catch(e){}})();
+(function(){try{
+if(location.search.indexOf('me=1')>-1){localStorage.setItem('nu_ignore','1')}
+if(localStorage.getItem('nu_ignore'))return; /* Ian's own devices: never counted */
+fetch('https://im-hits-production.up.railway.app/hit',{method:'POST',mode:'cors',keepalive:true,body:JSON.stringify({p:location.pathname,r:document.referrer})})}catch(e){}})();
 </script>
 </body>
 </html>
