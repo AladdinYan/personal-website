@@ -1,0 +1,2 @@
+{ "name": "im-hits", "private": true, "scripts": { "start": "node server.js" },
+  "dependencies": { "pg": "^8.11.0" } }
