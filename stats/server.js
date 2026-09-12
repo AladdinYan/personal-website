@@ -17,6 +17,10 @@ async function main() {
     path text, ref text, ua text)`);
   for (const c of ['vid text','country text','city text','device text'])
     await db.query(`ALTER TABLE site_hits ADD COLUMN IF NOT EXISTS ${c}`);
+  // waitlist — Reel Miner landing page (/reelminer). Email + which plan they'd pick. No IPs stored.
+  await db.query(`CREATE TABLE IF NOT EXISTS waitlist(
+    id serial primary key, ts timestamptz default now(),
+    product text, email text, plan text, note text, source text, unique(product, email))`);
   http.createServer(async (req, res) => {
     const reqO = req.headers.origin || '';
     const cors = { 'Access-Control-Allow-Origin': ORIGINS.includes(reqO) ? reqO : ORIGINS[0],
@@ -55,6 +59,32 @@ async function main() {
         res.writeHead(204, cors); res.end();
       });
       return;
+    }
+    if (req.method === 'POST' && u.pathname === '/waitlist') {
+      let body = '';
+      req.on('data', c => { if (body.length < 4000) body += c });
+      req.on('end', async () => {
+        try {
+          const b = JSON.parse(body || '{}');
+          const email = String(b.email || '').trim().toLowerCase().slice(0, 200);
+          if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { res.writeHead(400, cors); return res.end('bad email'); }
+          await db.query(
+            `INSERT INTO waitlist(product,email,plan,note,source) VALUES($1,$2,$3,$4,$5)
+             ON CONFLICT (product,email) DO UPDATE SET plan=excluded.plan, note=excluded.note, ts=now()`,
+            [String(b.product || 'reelminer').slice(0, 40), email, String(b.plan || '').slice(0, 40),
+             String(b.note || '').slice(0, 500), String(b.source || '').slice(0, 200)]);
+          const n = await db.query('SELECT count(*) n FROM waitlist WHERE product=$1', [String(b.product || 'reelminer').slice(0, 40)]);
+          res.writeHead(200, { ...cors, 'content-type': 'application/json' });
+          res.end(JSON.stringify({ ok: true, position: +n.rows[0].n }));
+        } catch (e) { console.error('waitlist', e.message); res.writeHead(500, cors); res.end(); }
+      });
+      return;
+    }
+    if (req.method === 'GET' && u.pathname === '/waitlist') {
+      if (!TOKEN || u.query.token !== TOKEN) { res.writeHead(403); return res.end('no'); }
+      const rows = await db.query('SELECT ts,email,plan,note,source FROM waitlist WHERE product=$1 ORDER BY ts DESC', [u.query.product || 'reelminer']);
+      res.writeHead(200, { 'content-type': 'application/json' });
+      return res.end(JSON.stringify({ count: rows.rowCount, rows: rows.rows }));
     }
     if (req.method === 'GET' && u.pathname === '/stats') {
       if (!TOKEN || u.query.token !== TOKEN) { res.writeHead(403); return res.end('no'); }

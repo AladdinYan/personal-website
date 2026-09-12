@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reel Miner — your saved reels, finally useful</title>
+<meta name="description" content="Reel Miner turns the Instagram reels you save into transcripts, categories, checklists and a chat that answers from them. Join the waitlist.">
+<meta property="og:title" content="Reel Miner — your saved reels, finally useful">
+<meta property="og:description" content="Every reel you saved, transcribed and sorted into categories with a checklist. Ask it anything. Join the waitlist.">
+<meta property="og:image" content="https://ianduncanmagee.com/reelminer/dashboard.png">
+<meta property="og:url" content="https://ianduncanmagee.com/reelminer/">
+<link rel="icon" href="../favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&display=swap">
+<style>
+:root{--page:#f6f7fb;--sheet:#fff;--well:#f6f7fb;--text:#323338;--muted:#676879;--faint:#9699a6;--line:#d0d4e4;--ui:#c3c6d4;--accent:#0073ea;--accent-hover:#0060b9;--brand:#6161ff;--good:#00c875;--font:"Figtree","Avenir Next","Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--text);font:400 16px/1.55 var(--font);-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+header{height:56px;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;color:var(--text);text-decoration:none}
+.mark{display:grid;grid-template-columns:1fr 1fr;gap:2px;width:26px;height:26px}
+.mark i{display:block;border-radius:3px}
+.mark i:nth-child(1){background:#6161ff;border-top-left-radius:9px}.mark i:nth-child(2){background:#00c875;border-top-right-radius:9px}.mark i:nth-child(3){background:#fdab3d;border-bottom-left-radius:9px}.mark i:nth-child(4){background:#ff158a;border-bottom-right-radius:9px}
+.by{font-size:13px;color:var(--muted)}
+.by a{color:var(--muted)}
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:36px;align-items:center;padding:40px 0 28px}
+@media (max-width:820px){.hero{grid-template-columns:1fr;padding-top:20px}}
+.eyebrow{display:inline-block;background:#ececff;color:#4b4bff;font-weight:600;font-size:13px;padding:3px 10px;border-radius:4px;margin-bottom:14px}
+h1{font:500 42px/1.1 var(--font);margin:0 0 14px;letter-spacing:-.01em;text-wrap:balance}
+@media (max-width:520px){h1{font-size:32px}}
+.lead{font-size:18px;color:var(--muted);margin:0 0 22px;max-width:34em}
+.shot{background:var(--sheet);border:1px solid var(--line);border-radius:12px;box-shadow:0 10px 30px rgba(29,37,80,.10);overflow:hidden}
+.shot img{display:block;width:100%;height:auto}
+form{display:flex;flex-direction:column;gap:10px;max-width:460px}
+.row{display:flex;gap:8px}
+input[type=email]{flex:1;height:46px;border:1px solid var(--ui);border-radius:6px;padding:0 14px;font:inherit;background:#fff;color:var(--text);min-width:0}
+input[type=email]:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px #cce5ff}
+button{height:46px;border:none;border-radius:6px;background:var(--brand);color:#fff;font:600 15px var(--font);padding:0 18px;cursor:pointer;white-space:nowrap}
+button:hover{background:#5151e6}
+button:disabled{opacity:.6;cursor:default}
+.plans{display:flex;gap:14px;flex-wrap:wrap;font-size:14px;color:var(--muted)}
+.plans label{display:flex;align-items:center;gap:6px;cursor:pointer}
+.small{font-size:13px;color:var(--faint)}
+.msg{font-size:14px;color:var(--good);font-weight:600;min-height:20px}
+.msg.err{color:#e2445c}
+section{padding:34px 0}
+h2{font:500 26px/1.2 var(--font);margin:0 0 18px;letter-spacing:-.01em}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media (max-width:760px){.grid3{grid-template-columns:1fr}}
+.card{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:18px 18px 16px}
+.card .band{height:6px;border-radius:3px;margin:-18px -18px 14px;border-radius:10px 10px 0 0}
+.card h3{margin:0 0 6px;font:600 17px var(--font)}
+.card p{margin:0;color:var(--muted);font-size:15px}
+.cats{display:flex;flex-wrap:wrap;gap:8px}
+.cat{font-size:13px;font-weight:500;padding:5px 10px;border-radius:5px;color:#fff}
+.quote{background:var(--sheet);border:1px solid var(--line);border-left:6px solid var(--brand);border-radius:8px;padding:16px 18px;margin:0;font-size:16px}
+.quote small{display:block;color:var(--muted);margin-top:6px;font-size:13px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:760px){.two{grid-template-columns:1fr}}
+.price{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:20px}
+.price.pro{border-color:var(--brand);box-shadow:inset 0 0 0 1px var(--brand)}
+.price h3{margin:0;font:600 18px var(--font)}
+.price .amt{font:500 34px/1 var(--font);margin:10px 0 4px}
+.price .amt span{font-size:15px;color:var(--muted)}
+.price ul{margin:12px 0 0;padding-left:18px;color:var(--muted);font-size:15px}
+.price li{margin:3px 0}
+.tag{display:inline-block;background:#e1f5ee;color:#0f6e56;font-size:12px;font-weight:600;padding:2px 8px;border-radius:4px;margin-left:8px;vertical-align:middle}
+.phone{max-width:300px;max-height:620px;overflow:hidden;margin:0 auto}
+footer{padding:30px 0 50px;font-size:13px;color:var(--faint);border-top:1px solid var(--line);margin-top:20px}
+footer a{color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="brand" href="./"><span class="mark"><i></i><i></i><i></i><i></i></span>Reel Miner</a>
+    <span class="by">by <a href="../">Ian Magee</a></span>
+  </header>
+
+  <section class="hero">
+    <div>
+      <span class="eyebrow">Waitlist open</span>
+      <h1>The reels you saved, finally useful.</h1>
+      <p class="lead">You save reels because they have something in them. Then they sit there. Reel Miner transcribes every reel you saved, sorts them into categories, writes the checklist, and answers your questions from them.</p>
+      <form id="wl">
+        <div class="row"><input type="email" id="email" placeholder="you@email.com" required autocomplete="email"><button type="submit" id="go">Join the waitlist</button></div>
+        <div class="plans">
+          <label><input type="radio" name="plan" value="free" checked> Free, 10 reels</label>
+          <label><input type="radio" name="plan" value="founding"> Founding price, £5 a month</label>
+        </div>
+        <div class="msg" id="msg"></div>
+        <div class="small">No spam. One email when it opens, and founding members keep the £5 price for good.</div>
+      </form>
+    </div>
+    <div class="shot"><img src="dashboard.png" alt="The Reel Miner dashboard: category tiles, a topline summary and a checklist for Onboarding" width="1200" height="1080"></div>
+  </section>
+
+  <section>
+    <h2>How it works</h2>
+    <div class="grid3">
+      <div class="card"><div class="band" style="background:#6161ff"></div><h3>1. Hand over your saves</h3><p>Instagram lets you download everything you saved in one file. Drop it in, or share reels one at a time.</p></div>
+      <div class="card"><div class="band" style="background:#00c875"></div><h3>2. Every reel gets read</h3><p>Transcript, on-screen text and caption become one note: what it claims, what to do, the numbers, the tools named, and whether it was worth your time.</p></div>
+      <div class="card"><div class="band" style="background:#fdab3d"></div><h3>3. Click a category</h3><p>Categories come from what your reels actually say. Each one has a topline summary, a checklist you can tick, and the reels behind it.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>What 290 saved reels turned into</h2>
+    <p class="lead" style="margin-bottom:16px">This is the real result from one collection. The categories were not preset; they came out of the reels.</p>
+    <div class="cats">
+      <span class="cat" style="background:#6161ff">Onboarding 19</span><span class="cat" style="background:#00c875">Paywall &amp; pricing 22</span><span class="cat" style="background:#e2445c">App security 23</span><span class="cat" style="background:#0086c0">App Store review &amp; ASO 22</span><span class="cat" style="background:#ff158a">Getting users 41</span><span class="cat" style="background:#a25ddc">Retention &amp; analytics 11</span><span class="cat" style="background:#fdab3d">Costs &amp; tech stack 25</span><span class="cat" style="background:#579bfc">Performance 12</span><span class="cat" style="background:#ff642e">Design &amp; UX 17</span><span class="cat" style="background:#784bd1">Claude Code &amp; agents 36</span><span class="cat" style="background:#4eccc6">Launch admin &amp; legal 16</span><span class="cat" style="background:#c4c4c4;color:#323338">Ads &amp; noise 36</span>
+    </div>
+    <div class="two" style="margin-top:18px">
+      <p class="quote">"Put the sign-up screen at the end of onboarding, not the start: one creator's sign-up rate rose about 40% from that single move."<small>Onboarding topline, drawn from 19 reels</small></p>
+      <p class="quote">"Hard paywalls beat freemium roughly 5x. Put the paywall inside onboarding, after the value screens: 44% of all purchases happen on day one."<small>Paywall &amp; pricing topline, drawn from 22 reels</small></p>
+    </div>
+  </section>
+
+  <section>
+    <div class="two" style="align-items:center">
+      <div>
+        <h2>Ask it anything</h2>
+        <p class="lead">"What do my reels say about pricing?" gets an answer with the reels it came from, not a generic one. Search runs across every transcript, on your phone or laptop.</p>
+        <h2 style="margin-top:26px">Pricing</h2>
+        <div class="two">
+          <div class="price"><h3>Free</h3><div class="amt">£0</div><ul><li>10 reels</li><li>Categories, toplines, checklists</li><li>10 questions</li></ul></div>
+          <div class="price pro"><h3>Founding<span class="tag">locked for life</span></h3><div class="amt">£5 <span>a month</span></div><ul><li>150 reels a month</li><li>Every saved collection</li><li>Unlimited categories, 150 questions</li><li>Monthly re-import in one click</li></ul></div>
+        </div>
+      </div>
+      <div class="shot phone"><img src="phone.png" alt="Reel Miner on a phone" width="520" height="2533"></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Join the waitlist</h2>
+    <form id="wl2">
+      <div class="row"><input type="email" id="email2" placeholder="you@email.com" required autocomplete="email"><button type="submit" id="go2">Join the waitlist</button></div>
+      <div class="plans">
+        <label><input type="radio" name="plan2" value="free" checked> Free, 10 reels</label>
+        <label><input type="radio" name="plan2" value="founding"> Founding price, £5 a month</label>
+      </div>
+      <div class="msg" id="msg2"></div>
+    </form>
+  </section>
+
+  <footer>Built by <a href="../">Ian Magee</a>. Reel Miner reads reels you saved; it is not affiliated with Instagram. Your email is stored on Ian's own server and used only to tell you when this opens.</footer>
+</div>
+
+<script>/* Master Nu's counter — self-hosted, no cookies, no IPs */
+(function(){try{
+if(location.search.indexOf('me=1')>-1){localStorage.setItem('nu_ignore','1')}
+if(localStorage.getItem('nu_ignore'))return;
+fetch('https://im-hits-production.up.railway.app/hit',{method:'POST',mode:'cors',keepalive:true,body:JSON.stringify({p:location.pathname,r:document.referrer})})}catch(e){}})();
+</script>
+<script>
+(function(){
+  var API = 'https://im-hits-production.up.railway.app/waitlist';
+  function wire(formId, emailId, planName, msgId, btnId){
+    var f = document.getElementById(formId); if(!f) return;
+    f.addEventListener('submit', async function(e){
+      e.preventDefault();
+      var email = document.getElementById(emailId).value.trim();
+      var plan = (f.querySelector('input[name='+planName+']:checked')||{}).value || 'free';
+      var msg = document.getElementById(msgId), btn = document.getElementById(btnId);
+      msg.className = 'msg'; msg.textContent = 'Adding you…'; btn.disabled = true;
+      try{
+        var r = await fetch(API, {method:'POST', mode:'cors', headers:{'content-type':'application/json'},
+          body: JSON.stringify({product:'reelminer', email:email, plan:plan, source: document.referrer || location.search})});
+        if(!r.ok) throw new Error('bad');
+        var d = await r.json();
+        msg.textContent = 'You are in. ' + (plan==='founding' ? 'Founding price reserved: £5 a month, for good.' : 'Number ' + d.position + ' on the list.');
+        f.querySelector('input[type=email]').value = '';
+        try{ localStorage.setItem('reelminer_wl', '1'); }catch(_){}
+      }catch(err){
+        msg.className = 'msg err'; msg.textContent = 'That did not go through. Try again, or message Ian on LinkedIn.';
+      }finally{ btn.disabled = false; }
+    });
+  }
+  wire('wl','email','plan','msg','go');
+  wire('wl2','email2','plan2','msg2','go2');
+})();
+</script>
+</body>
+</html>
