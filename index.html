@@ -105,7 +105,7 @@
     box-shadow: rgba(64, 49, 30, 0.28) 0px 9px 8px -7px;
     pointer-events: none;
   }
-  .bar-sticky2 { position: absolute; left: 100%; top: 7px; margin-left: 12px; background: #CFE8D6; padding: 5px 12px; transform: rotate(6deg); white-space: nowrap; box-shadow: rgba(64, 49, 30, 0.28) 0px 9px 8px -7px; }
+  .bar-sticky2 { position: absolute; left: 18px; top: 100%; margin-top: 8px; background: #CFE8D6; padding: 5px 12px; transform: rotate(5deg); white-space: nowrap; box-shadow: rgba(64, 49, 30, 0.28) 0px 9px 8px -7px; }
   @media (max-width: 1180px) { .bar-sticky { display: none; } }
   .face-ic { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; box-shadow: 0 3px 10px -3px rgba(20,5,51,.4); }
   .bar-right { display: flex; align-items: center; gap: 10px; }
@@ -302,7 +302,7 @@
     margin-top: 30px; position: relative; z-index: 2; flex-wrap: wrap;
   }
   .bigsub {
-    max-width: 1180px; margin: 56px auto 0; text-align: center;
+    max-width: 920px; margin: 56px auto 0; text-align: center;
     font-weight: 600; font-size: clamp(21px, 2.4vw, 27px); line-height: 1.42;
     letter-spacing: -0.6px; color: var(--ink);
     position: relative; z-index: 2; padding: 0 24px;
@@ -991,7 +991,7 @@
 <!-- ================= HOME ================= -->
 <section class="panel active" id="home" role="tabpanel">
   <div class="homeA">
-    <span class="bar-sticky">User Experience Researcher<span class="bar-sticky2">App Developer</span></span>
+    <span class="bar-sticky">User Experience Researcher<span class="bar-sticky2">AI App Developer</span></span>
     <h1 class="statement">Rese<span class="glyph gl-arch"></span>rching Human AI <span style="white-space:nowrap">C<span class="glyph gl-donut"></span>nnecti<span class="glyph gl-dot"></span>n</span> and <span style="white-space:nowrap">Pl<span class="glyph gl-sq"></span>y</span></h1>
     <p class="vid-kicker">My work, in motion</p>
     <div class="vids">
@@ -1270,7 +1270,7 @@
 
 <!-- ================= APPS ================= -->
 <section class="panel" id="apps" role="tabpanel">
-  <iframe id="appsFrame" src="apps/showcase.html" title="Ember Hatch apps: Memodate, Stocktend and Flashwell" style="display:block;width:100%;height:2600px;border:0;background:#1D2228"></iframe>
+  <iframe id="appsFrame" src="apps/showcase.html" title="Ember Hatch apps: Memodate, Stocktend and Flashwell" style="display:block;width:100%;height:2600px;border:0;background:#F8F0E3"></iframe>
 </section>
 
 <!-- ================= JOURNAL ================= -->
@@ -1674,7 +1674,7 @@
     if (barNote && vidsEl) {
       function noteFollow() {
         if (!panels.home.classList.contains('active')) { barNote.style.transform = 'rotate(-4deg)'; return; }
-        var tyMax = vidsEl.offsetTop - barNote.offsetTop - barNote.offsetHeight;
+        var tyMax = vidsEl.offsetTop - barNote.offsetTop - barNote.offsetHeight - 44;
         var ty = Math.min(window.scrollY, Math.max(0, tyMax));
         barNote.style.transform = 'translateY(' + ty + 'px) rotate(-4deg)';
       }
