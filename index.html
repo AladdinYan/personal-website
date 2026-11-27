@@ -966,6 +966,79 @@
     .contact-card { padding: 40px 26px; border-radius: 36px; }
     .form { grid-template-columns: 1fr; }
   }
+  /* ===== Home side card: Ember Hatch apps (design round 5, "Wobble") ===== */
+  @font-face {
+    font-family: 'Albert Sans';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url(fonts/AlbertSans-500-latin.woff2) format('woff2');
+  }
+  body:not(:has(#home.active)) #eh3 { display: none !important; }
+  .eh3 { --eh-ink: #180102; --eh-cream: #F8F0E3; --eh-card: #EDE4D8; --eh-orange: #F16B46; --eh-soft: #938A7D;
+    position: fixed; right: 24px; top: 17vh; z-index: 60; width: 352px;
+    font-family: 'General Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .eh3 * { box-sizing: border-box; }
+  .eh3 img { max-width: none; }
+  .eh3 b { font-weight: 600; }
+  .eh3 i, .eh3 em { font-style: normal; }
+  .eh3 button { font: inherit; border: 0; background: none; color: inherit; cursor: pointer; padding: 0; }
+  /* hangs tilted, half off the right edge; straightens and slides fully in on hover or focus */
+  .eh3 { --hang: 50%; --rot: -10deg; --origin: 100% 50%; }
+  .eh3 .slide { transform: translateX(calc(var(--hang) + 24px)) rotate(var(--rot)); transform-origin: var(--origin); transition: transform .65s cubic-bezier(.2,.85,.25,1); }
+  .eh3:hover .slide, .eh3.hov .slide, .eh3:focus-within .slide { transform: translateX(0) rotate(0deg); }
+  .eh3 .bob { transform-origin: var(--origin); animation: eh3wobble 4.4s ease-in-out infinite; }
+  .eh3:hover .bob, .eh3.hov .bob, .eh3:focus-within .bob { animation: none; }
+  @keyframes eh3wobble { 0%,60%,100% { transform: rotate(0deg) translateX(0); } 66% { transform: rotate(-4deg) translateX(-14px); } 72% { transform: rotate(2deg) translateX(-4px); } 78% { transform: rotate(-2deg) translateX(-10px); } 86% { transform: rotate(0deg) translateX(0); } }
+  .eh3 .card3 { background: #FFFDF8; border: 1px solid rgba(24,1,2,.08); border-radius: 24px; padding: 18px 16px 16px; box-shadow: 0 28px 56px -26px rgba(24,1,2,.5), 0 2px 0 rgba(24,1,2,.03); }
+  .eh3 .hd { display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto; column-gap: 12px; align-items: center; padding: 0 4px 12px; border-bottom: 1px solid rgba(24,1,2,.08); margin-bottom: 6px; }
+  .eh3 .hd .egg { grid-row: 1/3; height: 42px; width: auto; transition: transform .35s cubic-bezier(.2,.85,.25,1); }
+  .eh3:hover .hd .egg, .eh3.hov .hd .egg { transform: translateY(-3px); }
+  .eh3 .ttl { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .eh3 .ttl b { font-family: 'Solway', Georgia, serif; font-weight: 700; font-size: 20px; color: var(--eh-ink); letter-spacing: -.2px; }
+  .eh3 .ttl i { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 600; color: #126B36; }
+  .eh3 .dot { width: 7px; height: 7px; border-radius: 50%; background: #2FB35F; animation: eh3pulse 1.8s ease-out infinite; }
+  @keyframes eh3pulse { 0% { box-shadow: 0 0 0 0 rgba(47,179,95,.6); } 70% { box-shadow: 0 0 0 6px rgba(47,179,95,0); } 100% { box-shadow: 0 0 0 0 rgba(47,179,95,0); } }
+  .eh3 .sub { font-size: 13px; color: var(--eh-soft); }
+  .eh3 .r { display: flex; gap: 14px; align-items: flex-start; width: 100%; text-align: left; padding: 10px 8px; border-radius: 16px; transition: background .2s; }
+  .eh3 .r:hover { background: var(--eh-card); }
+  .eh3 .r img { width: 50px; height: 50px; border-radius: 13px; flex: 0 0 auto; box-shadow: 0 8px 16px -10px rgba(24,1,2,.45); }
+  .eh3 .tx { display: flex; flex-direction: column; gap: 2px; min-width: 0; line-height: 1.3; }
+  .eh3 .tx b { font-size: 16px; color: var(--eh-ink); letter-spacing: -.2px; }
+  .eh3 .tx > i { font-size: 13px; color: #5F574E; }
+  .eh3 .tx em { display: flex; align-items: center; gap: 7px; margin-top: 4px; font-size: 12px; color: var(--eh-soft); white-space: nowrap; }
+  .eh3 .live { display: inline-flex; align-items: center; gap: 5px; font-size: 9.5px; font-weight: 600; letter-spacing: 1.2px; color: #126B36; background: rgba(34,160,84,.16); padding: 2px 7px 2px 6px; border-radius: 999px; line-height: 1.4; }
+  .eh3 .live i { width: 6px; height: 6px; border-radius: 50%; background: #2FB35F; animation: eh3blink 1.6s ease-in-out infinite; }
+  @keyframes eh3blink { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+  .eh3 .cta { display: block; width: 100%; margin-top: 10px; background: var(--eh-ink); color: var(--eh-cream); border-radius: 999px; padding: 13px 0; font-weight: 600; font-size: 15.5px; transition: background .2s, transform .2s; }
+  .eh3 .cta:hover, .eh3.hov .cta { background: var(--eh-orange); color: #fff; transform: translateY(-2px); }
+  @media (prefers-reduced-motion: reduce) {
+    .eh3 .bob, .eh3 .dot, .eh3 .live i { animation: none; }
+    .eh3 .slide { transition: none; }
+  }
+  @media (max-width: 720px) {
+    .eh3 { top: auto; bottom: 16px; right: 12px; width: 288px; }
+    .eh3 .slide { transform: translateX(calc(var(--hang) + 12px)) rotate(calc(var(--rot) * .6)); }
+    .eh3 .card3 { padding: 12px 10px 10px; border-radius: 20px; }
+    .eh3 .hd { padding: 0 4px 8px; column-gap: 10px; }
+    .eh3 .hd .egg { height: 32px; }
+    .eh3 .ttl b { font-size: 16.5px; }
+    .eh3 .ttl i, .eh3 .sub { font-size: 11.5px; }
+    .eh3 .r { padding: 6px; gap: 10px; }
+    .eh3 .r img { width: 38px; height: 38px; border-radius: 10px; }
+    .eh3 .tx b { font-size: 14.5px; }
+    .eh3 .tx > i { font-size: 12px; }
+    .eh3 .tx em { white-space: normal; flex-wrap: wrap; row-gap: 2px; font-size: 11px; gap: 5px; }
+    .eh3 .cta { padding: 10px 0; font-size: 14px; margin-top: 6px; }
+  }
+
+  /* Meta and LEGO logo chips in the Home intro: same white chip, centred on the line, no possessive */
+  .ehc { display: inline-flex; align-items: center; gap: .3em; vertical-align: middle; position: relative; top: -.06em; height: 1.32em; border-radius: 999px; padding: 0 .5em; margin: 0 .04em; background: #fff; box-shadow: inset 0 0 0 1px rgba(24,1,2,.12); }
+  .ehc img { display: block; max-width: none; }
+  .ehc.meta img { height: .62em; width: auto; }
+  .ehc.lego { padding: 0 .52em 0 .32em; }
+  .ehc.lego img { height: .8em; width: auto; border-radius: .05em; }
+  .ehc.lego span { font-family: 'Albert Sans', 'General Sans', sans-serif; font-weight: 500; font-size: .86em; letter-spacing: 0; color: #192830; line-height: 1; }
 </style>
 
 <!-- ================= TOP BAR ================= -->
@@ -1024,7 +1097,7 @@
       <button class="mega portal-btn" data-go="apps">See my apps &#x1F680;</button>
       <button class="mega ghost portal-btn" data-go="journal">Read my articles &#x270D;&#xFE0F;</button>
     </div>
-    <p class="bigsub"><span class="c-orange">7+ years</span> researching how people <span class="c-mustard">play</span> and understanding <span class="c-blue">AI&#8211;Human Interaction</span>. Untangling ambiguous 0&#8594;1 products. Turning AI and the Metaverse into strategy at <span class="c-meta">Meta's</span> Reality Labs, and taking <span class="c-red">LEGO's</span> first new smart brick from concept to production.</p>
+    <p class="bigsub"><span class="c-orange">7+ years</span> researching how people <span class="c-mustard">play</span> and understanding <span class="c-blue">AI&#8211;Human Interaction</span>. Untangling ambiguous 0&#8594;1 products. Turning AI and the Metaverse into strategy at <span class="ehc meta"><img src="img/meta-lockup.svg" alt="Meta"></span> Reality Labs, and taking <span class="ehc lego"><img src="img/lego.svg" alt=""><span>LEGO</span></span> first new smart brick from concept to production.</p>
     <p class="career-kicker">My career</p>
     <div class="timeline">
       <div class="t-row">
@@ -1270,7 +1343,7 @@
 
 <!-- ================= APPS ================= -->
 <section class="panel" id="apps" role="tabpanel">
-  <iframe id="appsFrame" src="apps/showcase.html?v=20261127e" title="Ember Hatch apps: Memodate, Stocktend and Flashwell" style="display:block;width:100%;height:2600px;border:0;background:#F8F0E3"></iframe>
+  <iframe id="appsFrame" src="apps/showcase.html?v=20261127f" title="Ember Hatch apps: Memodate, Stocktend and Flashwell" style="display:block;width:100%;height:2600px;border:0;background:#F8F0E3"></iframe>
 </section>
 
 <!-- ================= JOURNAL ================= -->
@@ -1364,6 +1437,52 @@
 </div>
 
 <footer>&#169; 2026 &#8211; Ian Duncan Magee</footer>
+
+<!-- Home side card: Ember Hatch apps (shows on Home only; every row opens the Apps tab) -->
+<div class="eh3 t5" id="eh3">
+  <div class="slide">
+    <div class="bob">
+      <div class="card3">
+        <div class="hd">
+          <img class="egg" src="apps/ember-hatch-mark.png" alt="">
+          <span class="ttl"><b>Ember Hatch</b><i><span class="dot"></span>3 apps live</i></span>
+          <span class="sub">My AI app studio</span>
+        </div>
+        <button class="r portal-btn" data-go="apps" type="button">
+          <img src="apps/showcase/memodate-icon.jpg" alt="">
+          <span class="tx"><b>Memodate</b><i>Never forget a number</i><em><span class="live"><i></i>LIVE</span><span data-live3="2026-10-31"></span><span>&#183;</span><span>iPhone and Android</span></em></span>
+        </button>
+        <button class="r portal-btn" data-go="apps" type="button">
+          <img src="apps/showcase/stocktend-icon.jpg" alt="">
+          <span class="tx"><b>Stocktend</b><i>Your salon's stock app</i><em><span class="live"><i></i>LIVE</span><span data-live3="2026-11-08"></span><span>&#183;</span><span>iPhone and Android</span></em></span>
+        </button>
+        <button class="r portal-btn" data-go="apps" type="button">
+          <img src="apps/showcase/flashwell-icon.jpg" alt="">
+          <span class="tx"><b>Flashwell</b><i>Flashcards at the edge of your Mac</i><em><span class="live"><i></i>LIVE</span><span data-live3="2026-10-23"></span><span>&#183;</span><span>Mac</span></em></span>
+        </button>
+        <button class="cta portal-btn" data-go="apps" type="button">See the apps &#8594;</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  /* Side card: days live (counted from each launch date, so it goes up by one every day), and touch screens: first tap slides it in, second tap opens Apps */
+  (function () {
+    var card = document.getElementById('eh3');
+    if (!card) return;
+    function days(iso) { return Math.max(0, Math.floor((Date.now() - Date.parse(iso + 'T00:00:00Z')) / 864e5)); }
+    card.querySelectorAll('[data-live3]').forEach(function (el) {
+      var d = days(el.getAttribute('data-live3')); el.textContent = 'Live ' + d + (d === 1 ? ' day' : ' days');
+    });
+    if (window.matchMedia && window.matchMedia('(hover: none)').matches) {
+      card.addEventListener('click', function (e) {
+        if (!card.classList.contains('hov')) { e.preventDefault(); e.stopPropagation(); card.classList.add('hov'); }
+      }, true);
+      document.addEventListener('click', function (e) { if (!card.contains(e.target)) card.classList.remove('hov'); });
+    }
+  })();
+</script>
+
 
 <script>
   (function () {
